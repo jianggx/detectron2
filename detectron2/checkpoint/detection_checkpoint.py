@@ -96,7 +96,7 @@ class DetectionCheckpointer(Checkpointer):
             }
             return {"model": model_state, "__author__": "pycls", "matching_heuristics": True}
 
-        loaded = self._torch_load(filename)
+        loaded = torch.load(filename, weights_only=False)#self._torch_load(filename)
         if "model" not in loaded:
             loaded = {"model": loaded}
         assert self._parsed_url_during_load is not None, "`_load_file` must be called inside `load`"
