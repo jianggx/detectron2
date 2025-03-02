@@ -39,13 +39,18 @@ class BufferList(nn.Module):
 def _create_grid_offsets(
     size: List[int], stride: int, offset: float, target_device_tensor: torch.Tensor
 ):
+
     grid_height, grid_width = size
+
+    #print('++++++',grid_height, grid_width, 'grid_height, grid_width')
     shifts_x = move_device_like(
-        torch.arange(offset * stride, grid_width * stride, step=stride, dtype=torch.float32),
+        #torch.arange(offset * stride, grid_width * stride, step=stride, dtype=torch.float32),
+        torch.linspace(offset * stride, (offset+grid_width-1) * stride, steps=grid_width, dtype=torch.float32).flatten(),
         target_device_tensor,
     )
     shifts_y = move_device_like(
-        torch.arange(offset * stride, grid_height * stride, step=stride, dtype=torch.float32),
+        #torch.arange(offset * stride, grid_height * stride, step=stride, dtype=torch.float32),
+        torch.linspace(offset * stride, (offset+grid_height-1) * stride, steps=grid_height, dtype=torch.float32).flatten(),
         target_device_tensor,
     )
 

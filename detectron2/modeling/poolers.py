@@ -63,8 +63,13 @@ def assign_boxes_to_levels(
 @torch.jit.script_if_tracing
 def _convert_boxes_to_pooler_format(boxes: torch.Tensor, sizes: torch.Tensor) -> torch.Tensor:
     sizes = sizes.to(device=boxes.device)
+    
+    num = int(sizes.shape[0])
+    #print('++++++len(sizes), num',len(sizes), num, sizes)
     indices = torch.repeat_interleave(
-        torch.arange(len(sizes), dtype=boxes.dtype, device=boxes.device), sizes
+        #torch.arange(len(sizes), dtype=boxes.dtype, device=boxes.device), sizes  // todo gavin
+        #torch.arange(sizes.shape[0], dtype=boxes.dtype, device=boxes.device), sizes
+        torch.linspace(0, num-1, steps=num, dtype=boxes.dtype, device=boxes.device).flatten(), sizes
     )
     return cat([indices[:, None], boxes], dim=1)
 

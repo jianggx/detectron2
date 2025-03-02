@@ -68,7 +68,9 @@ def find_top_rpn_proposals(
     topk_scores = []  # #lvl Tensor, each of shape N x topk
     topk_proposals = []
     level_ids = []  # #lvl Tensor, each of shape (topk,)
-    batch_idx = move_device_like(torch.arange(num_images, device=device), proposals[0])
+    #batch_idx = move_device_like(torch.arange(num_images, device=device), proposals[0]) # todo gavin
+    #print('++++++num_images',num_images)
+    batch_idx = move_device_like(torch.linspace(0,num_images-1, steps=num_images, dtype=int, device=device).flatten(), proposals[0])
     for level_id, (proposals_i, logits_i) in enumerate(zip(proposals, pred_objectness_logits)):
         Hi_Wi_A = logits_i.shape[1]
         if isinstance(Hi_Wi_A, torch.Tensor):  # it's a tensor in tracing
